@@ -1,23 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { UploadContainer } from "./components/UploadContainer/UploadContainer";
+import { UploadingBox } from "./components/UploadingBox/UploadingBox";
+import { UploadedContainer } from "./components/UploadedContainer/UploadedContainer";
+
+enum UploadStatuses {
+  initial,
+  uploading,
+  uploaded,
+}
 
 function App() {
+  const [uploadStatus, setUploadStatus] = useState<UploadStatuses>(
+    UploadStatuses.initial
+  );
+
+  function setUploadingStatus(){
+    setUploadStatus(UploadStatuses.uploading)
+  }
+
+  function setUploadedStatus(){
+    setUploadStatus(UploadStatuses.uploaded)
+  }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="container">
+        {uploadStatus === UploadStatuses.initial && <UploadContainer updateUI={setUploadingStatus} />}
+        {uploadStatus === UploadStatuses.uploading && <UploadingBox updateUI={setUploadedStatus}/>}
+        {uploadStatus === UploadStatuses.uploaded && <UploadedContainer />}
       </header>
     </div>
   );
